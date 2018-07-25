@@ -1,4 +1,9 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, ViewChild } from '@angular/core';
+import { UserService } from '../../services/user.service';
+import { Observable } from 'rxjs';
+import { User } from '../../models/user';
+import { Router } from '@angular/router';
+import { MatSidenav } from '@angular/material';
 
 const SMALL_WIDTH_BREAKPOINT = 720;//IN PX
 
@@ -10,11 +15,24 @@ const SMALL_WIDTH_BREAKPOINT = 720;//IN PX
 export class SidenavComponent implements OnInit {
   // private mediaMatcher: MediaQueryList = matchMedia(`(min-width): ${SMALL_WIDTH_BREAKPOINT}px`);
   public innerWidth: any;
+  private users: Observable<User[]>;
+  @ViewChild(MatSidenav) sidenav: MatSidenav;
   
-  constructor() { }
+  constructor(
+    private userService: UserService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
       this.innerWidth = window.innerWidth;
+      this.users = this.userService.users;
+      this.userService.loadAll();
+
+      this.router.events.subscribe(() =>{
+        if(this.isScreenSmall()){
+          this.sidenav.close();
+        }
+      });
   }
 
   @HostListener('window:resize', ['$event'])
