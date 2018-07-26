@@ -14,8 +14,8 @@
     </mat-form-field>
     
     <mat-form-field>
-      <input matInput placeholder="Name" [formControl]="nameFormControl" [(ngModel)]="user.name" required>
-      <mat-error *ngIf="nameFormControl.invalid">{{getErrorMessage()}}</mat-error>
+      <input matInput placeholder="Name" [(ngModel)]="user.name" required #name="ngModel">
+      <mat-error *ngIf="name.invalid">{{'You must enter a name?'}}</mat-error>
     </mat-form-field>
   
     <mat-form-field>
