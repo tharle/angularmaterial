@@ -17,6 +17,8 @@ export class SidenavComponent implements OnInit {
   public innerWidth: any;
   private users: Observable<User[]>;
   @ViewChild(MatSidenav) sidenav: MatSidenav;
+  private isDarkTheme: boolean ;  
+  private isLeft: boolean ; 
   
   constructor(
     private userService: UserService,
@@ -24,15 +26,17 @@ export class SidenavComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-      this.innerWidth = window.innerWidth;
-      this.users = this.userService.users;
-      this.userService.loadAll();
+    this.isDarkTheme = false;
+    this.isLeft = true;
+    this.innerWidth = window.innerWidth;
+    this.users = this.userService.users;
+    this.userService.loadAll();
 
-      this.router.events.subscribe(() =>{
-        if(this.isScreenSmall()){
-          this.sidenav.close();
-        }
-      });
+    this.router.events.subscribe(() =>{
+      if(this.isScreenSmall()){
+        this.sidenav.close();
+      }
+    });
   }
 
   @HostListener('window:resize', ['$event'])
@@ -46,5 +50,19 @@ export class SidenavComponent implements OnInit {
     // return this.mediaMatcher.matches;
     return this.innerWidth <= SMALL_WIDTH_BREAKPOINT;
   }
+
+  toggleTheme(){
+    this.isDarkTheme = !this.isDarkTheme;
+  }
+
+  toggleDir(){
+    this.isLeft = !this.isLeft;
+  }
+
+  
+  public get direction() : string {
+    return this.isLeft? "rtd" : "rtl";
+  }
+  
 
 }
