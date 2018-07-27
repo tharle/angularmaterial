@@ -61,7 +61,7 @@ export class SidenavComponent implements OnInit {
 
   
   public get direction() : string {
-    return this.isLeft? "rtd" : "rtl";
+    return this.isLeft? "ltr" : "rtl";
   }
   
 
